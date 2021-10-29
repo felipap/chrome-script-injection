@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "types": ["chrome"],
+    "moduleResolution": "node",
+    "strict": true,
+    "isolatedModules": true,
+    "module": "es2015",
+    "experimentalDecorators": true,
+    "paths": {
+      "shared/*": [
+        "../../shared/*"
+      ],
+      "client/*": [
+        "./*"
+      ]
+    },
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "outDir": "build",
+    "target": "es5",
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowUnreachableCode": true
+  },
+  "include": [
+    "src/background.ts",
+    "src/popup.tsx",
+    "src/script.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}
