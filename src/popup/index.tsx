@@ -35,7 +35,7 @@ function App() {
 
   return (
     <Box>
-      url: {config?.url}
+      URL: {config?.url}
       <br />
       <button onClick={onClickSet}>Set</button>
       <button onClick={onClickClear}>Clear</button>

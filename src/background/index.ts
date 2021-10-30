@@ -18,14 +18,7 @@ export interface HostConfig {
 // This must not be async so that this solution can work
 // https://stackoverflow.com/questions/14094447
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log(
-    sender.tab
-      ? 'from a content script:' + sender.tab.url
-      : 'from the extension',
-    request
-  )
   if (sender.tab) {
-    console.log('Sending response back')
     getScriptsForTab(sender.tab!).then(scripts => {
       chrome.browserAction.setBadgeText({
         text: scripts.length ? 'ON' : '',
@@ -35,7 +28,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     })
   } else if (request.type === 'getConfigForHost') {
     getConfigForHost(request.host).then(config => {
-      console.log('Nooow we can send a response')
       sendResponse({ config })
     })
   } else if (request.type === 'setConfigForHost') {
@@ -54,7 +46,6 @@ async function getScriptsForTab(tab: chrome.tabs.Tab): Promise<string[]> {
   }
 
   const config = await getConfigForHost(url.hostname)
-  console.log('config for this store is', config)
 
   if (!config || !config.url) {
     return []

@@ -6,9 +6,7 @@ chrome.runtime.sendMessage({}, function (response) {
   }
 
   const scriptUrl = response.pleaseLoad[0]
-
   console.log('Background asked us to run', scriptUrl)
-  console.log(response.pleaseLoad)
 
   // Modify script url to add random search parameter, to prevent caching.
   const url = new URL(scriptUrl)
