@@ -12,6 +12,8 @@ chrome.runtime.sendMessage({}, function (response) {
   const url = new URL(scriptUrl)
   url.searchParams.set('cachekey', String(Math.floor(Math.random() * 10000)))
 
+  console.log('%c SUB-SCRIPT-TEST-EXTENSION:', 'color: blue', `script ${url.href} injected.`)
+
   const script = document.createElement('script')
   script.type = 'text/javascript'
   script.async = false

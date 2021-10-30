@@ -8,8 +8,8 @@
     "128": "assets/icon_128.png"
   },
   "browser_action": {
-    "default_icon": "assets/icon_19.png",
-    "default_title": "Cookie Jar",
+    "default_icon": "assets/icon_128.png",
+    "default_title": "Inject Script",
     "default_popup": "dist/popup.html"
   },
   "content_scripts": [
