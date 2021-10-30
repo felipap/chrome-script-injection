@@ -3,21 +3,12 @@
 import { getConfigForHost, setConfigForHost } from './storage'
 
 export interface HostConfig {
-  on: boolean
+  url: string | null
 }
 
 // It seems that the only way to load a custom, remote script in the front-end
 // is to pass the message about what it is to the front-end and then to the
 // whole document.createElement() thing.
-
-export {}
-
-chrome.runtime.onInstalled.addListener(async details => {
-  console.log('Extension installed')
-  // await setConfigForHost('store.human.fan', { })
-  // const config = await getConfigForHost('store.human.fan')
-  // console.log('Config for host is', config)
-})
 
 // chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 //   if (changeInfo.status == 'complete') {
@@ -56,16 +47,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 })
 
 async function getScriptsForTab(tab: chrome.tabs.Tab): Promise<string[]> {
-  if (new URL(tab.url!).protocol !== 'https:') {
+  const url = new URL(tab.url!)
+
+  if (url.protocol !== 'https:') {
     return []
   }
 
-  const config = await getConfigForHost('store.human.fan')
+  const config = await getConfigForHost(url.hostname)
   console.log('config for this store is', config)
 
-  if (!config || !config.on) {
+  if (!config || !config.url) {
     return []
   }
 
-  return ['https://storage.googleapis.com/human-static/cartwheel/latest.js']
+  return [config.url]
 }

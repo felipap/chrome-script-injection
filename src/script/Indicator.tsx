@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Box } from 'theme-ui'
 
-function Indicator() {
+function Indicator({ url }: { url: string }) {
   return (
     <Box
       sx={{
@@ -12,16 +12,17 @@ function Indicator() {
         padding: '20px',
         background: 'white',
         zIndex: 100,
-        boxShadow: '0 0 10px rgba(0, 0, 0, .2)'
+        boxShadow: '0 0 10px rgba(0, 0, 0, .2)',
       }}
+      title={url}
     >
       Script injection is active
     </Box>
   )
 }
 
-export function installIndicator() {
+export function installIndicator(url: string) {
   const mount = document.createElement('div')
   document.body.appendChild(mount)
-  ReactDOM.render(<Indicator />, mount)
+  ReactDOM.render(<Indicator url={url} />, mount)
 }

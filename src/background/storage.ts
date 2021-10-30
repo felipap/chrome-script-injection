@@ -2,7 +2,9 @@ import { HostConfig } from '.'
 
 const HOST_CONFIG_KEY = 'host-configs'
 
-export async function getConfigForHost(host: string): Promise<HostConfig | null> {
+export async function getConfigForHost(
+  host: string
+): Promise<HostConfig | null> {
   return new Promise(accept => {
     chrome.storage.local.get([HOST_CONFIG_KEY], result => {
       const hostConfigs = result[HOST_CONFIG_KEY]

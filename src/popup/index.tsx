@@ -14,13 +14,19 @@ function App() {
     load()
   }, [])
 
-  async function onClickToggle() {
-    let newConfig = { ...config }
-    if (config.on) {
-      newConfig.on = false
-    } else {
-      newConfig.on = true
-    }
+  async function onClickClear() {
+    updateValueAndReload({ url: null })
+  }
+
+  async function onClickSet() {
+    const url = prompt(
+      'Enter an URL to load',
+      'https://storage.googleapis.com/human-static/cartwheel/dev-latest.js'
+    )
+    updateValueAndReload({ url: url ?? null })
+  }
+
+  async function updateValueAndReload(newConfig: typeof config) {
     setConfig(newConfig)
     await setConfigForHost(newConfig)
     const tab = await getTab()
@@ -29,10 +35,10 @@ function App() {
 
   return (
     <Box>
-      Hi!
-      <button onClick={onClickToggle}>Toggle</button>
+      url: {config?.url}
       <br />
-      <pre>{JSON.stringify(config)}</pre>
+      <button onClick={onClickSet}>Set</button>
+      <button onClick={onClickClear}>Clear</button>
     </Box>
   )
 }

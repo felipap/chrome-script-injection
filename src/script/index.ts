@@ -15,7 +15,7 @@ chrome.runtime.sendMessage({}, function (response) {
   script.async = false
   script.src = scriptUrl
 
-  installIndicator()
+  installIndicator(scriptUrl)
 
   const first = document.getElementsByTagName('script')[0]
   first.parentNode!.insertBefore(script, first)
