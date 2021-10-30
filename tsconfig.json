@@ -36,7 +36,8 @@
   "include": [
     "src/background.ts",
     "src/popup.tsx",
-    "src/script.ts"
+    "src/script.ts",
+    "src/*.ts"
   ],
   "exclude": [
     "node_modules",

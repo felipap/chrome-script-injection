@@ -8,8 +8,8 @@ module.exports = function main(_, { mode }) {
 
     entry: {
       popup: './src/popup/index.tsx',
-      script: './src/script.ts',
-      background: './src/background.ts',
+      script: './src/script/index.ts',
+      background: './src/background/index.ts',
     },
 
     output: {

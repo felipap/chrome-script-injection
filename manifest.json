@@ -1,16 +1,13 @@
 {
-  "manifest_version": 3,
-  "name": "Cookie Jar",
+  "manifest_version": 2,
+  "name": "Sub Script Tester",
   "options_page": "options.html",
-  "background": {
-    "service_worker": "build/background.js"
-  },
   "version": "1.0.0",
   "icons": {
     "48": "assets/icon_48.png",
     "128": "assets/icon_128.png"
   },
-  "action": {
+  "browser_action": {
     "default_icon": "assets/icon_19.png",
     "default_title": "Cookie Jar",
     "default_popup": "dist/popup.html"
@@ -28,17 +25,20 @@
     }
   ],
   "permissions": [
-    "cookies",
     "tabs",
+    "activeTab",
+    "http://*/*",
+    "https://*/*",
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "webNavigation",
+    "contextMenus"
   ],
-  "host_permissions": [
-    "*://*/*"
-  ],
-  "minimum_chrome_version": "11.0.674.0",
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'",
-    "sandbox": "sandbox allow-scripts; script-src 'self' 'https://apis.google.com/'; object-src 'self'"
-  }
+  "background": {
+    "scripts": [
+      "build/background.js"
+    ],
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' https://storage.googleapis.com/human-static; object-src 'self'"
 }

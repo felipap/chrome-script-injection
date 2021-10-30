@@ -1,6 +1,35 @@
 {
+  "name": "sub-script-test-extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:felipap/sub-script-test-extension.git",
+  "author": "Felipe Aragao <pires.a.felipe@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "compile": "webpack --mode production --config webpack.config.js",
+    "dev": "webpack watch --mode development --config webpack.config.js",
+    "lint": "gts lint"
+  },
   "dependencies": {
+    "@theme-ui/components": "^0.12.0",
     "@types/lodash": "^4.14.176",
-    "lodash": "^4.17.21"
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "dayjs": "^1.10.7",
+    "got": "^11.8.2",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "theme-ui": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.162",
+    "gts": "^3.1.0",
+    "source-map-support": "^0.5.20",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4",
+    "webpack": "^5.61.0",
+    "webpack-cli": "^4.9.1"
   }
 }

@@ -1,57 +1,73 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Box, Button } from 'theme-ui'
-import { changeExpirationForCookie, loadCookiesForTab } from './api'
-import { CookieTable } from './Table'
+import type { HostConfig } from '../background'
+import { Box } from 'theme-ui'
+import { getTab } from '../utils'
 
 function App() {
-  const [cookies, setCookies] = useState<chrome.cookies.Cookie[]>([])
-  const [reset, setReset] = useState(0)
+  const [config, setConfig] = useState<HostConfig | null>()
 
   useEffect(() => {
     async function load() {
-      const tab = await getTab()
-      setCookies(await loadCookiesForTab(tab))
+      setConfig(await getConfigForHost())
     }
     load()
-  }, [reset])
+  }, [])
 
-  async function onClickSkipDay() {
-    const tab = await getTab()
-
-    alert(`About to skip ahead for ${cookies.length}`)
-
-    for (const cookie of cookies) {
-      await changeExpirationForCookie(
-        tab,
-        cookie.name,
-        cookie.expirationDate
-        // Expire 25 hours, actually!
-          ? new Date((cookie.expirationDate - 25 * 60 * 60) * 1000)
-          : new Date(0)
-      )
+  async function onClickToggle() {
+    let newConfig = { ...config }
+    if (config.on) {
+      newConfig.on = false
+    } else {
+      newConfig.on = true
     }
-
-    setReset(reset + 1)
+    setConfig(newConfig)
+    await setConfigForHost(newConfig)
+    const tab = await getTab()
+    chrome.tabs.reload(tab.id)
   }
 
   return (
     <Box>
-      <Button sx={{ bg: 'blue' }} onClick={onClickSkipDay}>
-        Skip one day
-      </Button>
-      <CookieTable cookies={cookies} reset={() => setReset(reset + 1)} />
+      Hi!
+      <button onClick={onClickToggle}>Toggle</button>
+      <br />
+      <pre>{JSON.stringify(config)}</pre>
     </Box>
   )
 }
 
 ReactDOM.render(<App />, document.getElementById('mount'))
 
-export async function getTab() {
-  return (
-    await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    })
-  )[0]
+export async function getConfigForHost(): Promise<HostConfig | null> {
+  // @ts-ignore
+  const tab = await getTab()
+  const tabHost = new URL(tab.url!).hostname
+
+  return new Promise(accept => {
+    console.log('sending message!')
+
+    chrome.runtime.sendMessage(
+      { type: 'getConfigForHost', host: tabHost },
+      response => {
+        accept(response.config)
+      }
+    )
+  })
+}
+
+export async function setConfigForHost(config: HostConfig) {
+  // @ts-ignore
+  const tab = await getTab()
+  const tabHost = new URL(tab.url!).hostname
+
+  return new Promise(accept => {
+    chrome.runtime.sendMessage(
+      { type: 'setConfigForHost', host: tabHost, config },
+      response => {
+        console.log('reponse is what', response)
+        accept(response.config)
+      }
+    )
+  })
 }
