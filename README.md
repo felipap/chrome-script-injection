@@ -1,6 +1,13 @@
 
 # sub-script-test-extension
 
+## Installing
+
+Simply download a zip of the entire repo and use the Chrome Load Unpacked
+feature to load the extension from the extracted folder.
+
+## Comment on manifest v3
+
 This extension uses Manifest V2, which will be sunset in a couple of years.
 Using the latest manifest version (ie. 3) would have been ideal, but
 unfortunately this no longer allows remote loading of Javascript code (in any
