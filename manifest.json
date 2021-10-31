@@ -1,7 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Sub Script Tester",
-  "options_page": "options.html",
+  "name": "Sub Script Injector",
   "version": "1.0.0",
   "icons": {
     "48": "assets/icon_48.png",

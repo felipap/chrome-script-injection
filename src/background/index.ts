@@ -4,6 +4,7 @@ import { getConfigForHost, setConfigForHost } from './storage'
 
 export interface HostConfig {
   url: string | null
+  dataset?: any | null
 }
 
 // It seems that the only way to load a custom, remote script in the front-end
@@ -19,12 +20,18 @@ export interface HostConfig {
 // https://stackoverflow.com/questions/14094447
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (sender.tab) {
-    getScriptsForTab(sender.tab!).then(scripts => {
+    getActiveConfigForTab(sender.tab!).then(config => {
       chrome.browserAction.setBadgeText({
-        text: scripts.length ? 'ON' : '',
+        text: config? 'ON' : '',
         tabId: sender.tab!.id,
       })
-      sendResponse({ pleaseLoad: scripts })
+
+      if (!config) {
+        sendResponse({ config })
+        return
+      }
+
+      sendResponse({ config })
     })
   } else if (request.type === 'getConfigForHost') {
     getConfigForHost(request.host).then(config => {
@@ -38,18 +45,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true
 })
 
-async function getScriptsForTab(tab: chrome.tabs.Tab): Promise<string[]> {
+async function getActiveConfigForTab(
+  tab: chrome.tabs.Tab
+): Promise<HostConfig | null> {
   const url = new URL(tab.url!)
 
   if (url.protocol !== 'https:') {
-    return []
+    return null
   }
 
   const config = await getConfigForHost(url.hostname)
 
   if (!config || !config.url) {
-    return []
+    return null
   }
 
-  return [config.url]
+  return config
 }
